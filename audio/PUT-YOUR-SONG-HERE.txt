@@ -1,0 +1,1 @@
+Save your song in this folder as song.mp3 (or change SONG in js/config.js).
