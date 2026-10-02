@@ -26,12 +26,13 @@
     stage.style.setProperty("--ink", "#fff");
     var boxes = [["d", "DAYS", "#f772c4"], ["h", "HOURS", "#eef542"], ["m", "MINUTES", "#a6f6ec"], ["s", "SECONDS", "#d6f75c"]]
       .map(function (b, i) {
-        return '<div class="box rise" style="--d:' + (0.5 + i * 0.12) + "s;background:" + b[2] + ';color:#0b0b0b"><b id="g-' + b[0] + '">00</b><small>' + b[1] + "</small></div>";
+        return '<div class="box rise" id="g-box-' + b[0] + '" style="--d:' + (0.5 + i * 0.12) + "s;background:" + b[2] + ';color:#0b0b0b"><b id="g-' + b[0] + '">00</b><small>' + b[1] + "</small>" + (b[0] === "s" ? '<i class="sweep" id="g-sweep"></i>' : "") + "</div>";
       }).join("");
     stage.innerHTML =
       '<div class="scr gate" style="background:#0b0b0b">' +
       A.chromeBlock("top:0;left:0", 150, 190, "slideL", 0) +
       A.burst("top:-60px;left:150px", 170, { seed: 1 }) +
+      '<div class="abs" id="g-big" aria-hidden="true" style="top:150px;left:0;right:0;text-align:center;font-size:420px;font-weight:900;line-height:1;color:#fff;opacity:0;pointer-events:none"></div>' +
       '<div class="abs" id="g-main" style="z-index:5;top:176px;left:0;right:0;text-align:center;color:#fff">' +
       '<div class="rise" style="--d:.2s">' + A.hl("COMING SOON", "#ff5b3f", "#0b0b0b", 15, "letter-spacing:1.4px") + "</div>" +
       '<div class="rise" style="--d:.3s;font-size:56px;font-weight:900;letter-spacing:-2.2px;line-height:.95;margin-top:18px">' + C.GATE_TITLE.replace(" ", "<br>") + "</div>" +
@@ -46,6 +47,7 @@
       A.heart("right:-34px;bottom:56px", 120) +
       A.footer(C.GATE_FROM.toUpperCase()) +
       '<button id="g-music" aria-label="Play music" style="position:absolute;z-index:30;top:14px;right:14px;width:40px;height:40px;border-radius:20px;border:0;background:#fff;display:none;align-items:center;justify-content:center;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="#0b0b0b"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="#0b0b0b" stroke-width="2" stroke-linecap="round"/><path class="x" d="M3 3l18 18" stroke="#ff5b3f" stroke-width="2.5" stroke-linecap="round"/></svg></button>' +
+      '<div class="abs" id="g-fx" style="inset:0;pointer-events:none;z-index:6"></div>' +
       '<div class="abs" id="g-open" style="inset:0;display:none"></div>' +
       "</div>";
   }
@@ -59,9 +61,43 @@
       var txt = pad(v[k]);
       if (last[k] !== txt) {
         el.textContent = txt; last[k] = txt;
-        if (k === "s" && !reduce) { el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); }
+        if (!reduce) {
+          // digits roll in from above; the seconds box also pulses and flashes
+          el.classList.remove("roll"); void el.offsetWidth; el.classList.add("roll");
+          if (k === "s") {
+            var box = document.getElementById("g-box-s");
+            box.classList.remove("pulse"); void box.offsetWidth; box.classList.add("pulse");
+            particles(box);
+          }
+        }
       }
     });
+    // seconds sweep bar fills across each minute
+    var sw = document.getElementById("g-sweep");
+    if (sw) sw.style.transform = "scaleX(" + ((60 - v.s) / 60) + ")";
+    // final 10 seconds: everything shakes and a giant number pops behind
+    var boxes = document.getElementById("g-boxes"), big = document.getElementById("g-big");
+    if (boxes && s <= 10 && s > 0) {
+      boxes.classList.add("final");
+      if (big && big.textContent !== String(s)) {
+        big.textContent = s; big.classList.remove("bigpop"); void big.offsetWidth; big.classList.add("bigpop");
+      }
+    }
+  }
+
+  // little confetti dots that fly off the seconds box on every tick
+  var DOTS = ["#ff5b3f", "#f772c4", "#eef542", "#a6f6ec", "#3df26a", "#ffffff"];
+  function particles(box) {
+    var layer = document.getElementById("g-fx"); if (!layer) return;
+    var r = box.getBoundingClientRect(), sr = stage.getBoundingClientRect(), k = sr.width / 390;
+    var cx = (r.left - sr.left + r.width / 2) / k, cy = (r.top - sr.top + r.height / 2) / k;
+    for (var i = 0; i < 6; i++) {
+      var dot = document.createElement("i"), a = Math.random() * 6.283, dist = 40 + Math.random() * 50;
+      dot.className = "dot";
+      dot.style.cssText = "left:" + cx + "px;top:" + cy + "px;background:" + DOTS[(Math.random() * DOTS.length) | 0] + ";--x:" + Math.cos(a) * dist + "px;--y:" + Math.sin(a) * dist + "px";
+      layer.appendChild(dot);
+      setTimeout(function (n) { return function () { n.remove(); }; }(dot), 800);
+    }
   }
 
   // Pressing Start before the unlock shows a random joke (shuffled, no immediate repeats).
