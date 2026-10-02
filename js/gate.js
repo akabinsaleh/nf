@@ -32,12 +32,13 @@
       '<div class="scr gate" style="background:#0b0b0b">' +
       A.chromeBlock("top:0;left:0", 150, 190, "slideL", 0) +
       A.burst("top:-60px;left:150px", 170, { seed: 1 }) +
-      '<div class="abs" id="g-main" style="z-index:5;top:190px;left:0;right:0;text-align:center;color:#fff">' +
+      '<div class="abs" id="g-main" style="z-index:5;top:176px;left:0;right:0;text-align:center;color:#fff">' +
       '<div class="rise" style="--d:.2s">' + A.hl("COMING SOON", "#ff5b3f", "#0b0b0b", 15, "letter-spacing:1.4px") + "</div>" +
       '<div class="rise" style="--d:.3s;font-size:56px;font-weight:900;letter-spacing:-2.2px;line-height:.95;margin-top:18px">' + C.GATE_TITLE.replace(" ", "<br>") + "</div>" +
       '<div class="rise" style="--d:.4s;font-size:15px;font-weight:600;margin-top:12px;opacity:.85">' + C.GATE_SUB + "</div>" +
-      '<div class="rise" style="--d:.5s;margin-top:18px">' + A.hl(C.GATE_FROM, "#eef542", "#0b0b0b", 14) + "</div>" +
-      '<div id="g-boxes" style="display:flex;gap:8px;justify-content:center;margin-top:26px">' + boxes + "</div>" +
+      '<div class="rise" style="--d:.5s;margin-top:16px">' + A.hl(C.GATE_TO, "#f772c4", "#0b0b0b", 17) + "</div>" +
+      '<div class="rise" style="--d:.6s;margin-top:8px">' + A.hl(C.GATE_FROM, "#eef542", "#0b0b0b", 13) + "</div>" +
+      '<div id="g-boxes" style="display:flex;gap:8px;justify-content:center;margin-top:22px">' + boxes + "</div>" +
       '<button class="btn rise" id="g-start" style="--d:1.2s;margin-top:24px">' + C.START_BUTTON + "</button>" +
       '<div id="g-msg" style="min-height:56px;margin-top:16px;padding:0 20px"></div>' +
       "</div>" +

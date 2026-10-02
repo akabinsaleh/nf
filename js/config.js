@@ -4,6 +4,7 @@ window.CONFIG = {
   // opens at the same moment everywhere. Change the year/offset as needed.
   UNLOCK_AT: "2026-10-04T00:00:00+03:00",
   GATE_TITLE: "Something's coming.",
+  GATE_TO: "To Nouf, my heart",
   GATE_FROM: "From Abdulaziz Alsaleh",
   GATE_SUB: "Opens October 4",
   // Put your file at audio/song.mp3 (or change this path). Set to "" for no music.
