@@ -148,7 +148,10 @@
     render(left);
   }
 
+  var unlocked = false;
   function unlock() {
+    if (unlocked) return; // the interval can fire again before it's cleared; only build the unlock screen once
+    unlocked = true;
     render(0);
     var g = document.getElementById("g-open");
     document.getElementById("g-main").style.display = "none";
