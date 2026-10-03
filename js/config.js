@@ -32,5 +32,5 @@ window.CONFIG = {
     "Your finger must be tired by now.",
     "Fine, I'll tell you: it's worth the wait."
   ],
-  NAMES: ["NAME ONE", "NAME TWO"],
+  NAMES: ["ABDULAZIZ", "NOUF"],
 };
